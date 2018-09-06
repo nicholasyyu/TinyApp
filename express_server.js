@@ -1,5 +1,7 @@
 var express = require("express");
+var cookieParser = require('cookie-parser')
 var app = express();
+app.use(cookieParser());
 var PORT = 8080; // default port 8080
 
 const bodyParser = require("body-parser");
@@ -17,24 +19,31 @@ app.get("/", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase, };
+  let templateVars = { urls: urlDatabase, username: req.cookies["username"],};
   res.render("urls_index", templateVars);
 });
 //GET Route to Show the Form
 app.get("/urls_new", (req, res) => {
-  res.render("urls_new");
+  let templateVars = { username: req.cookies["username"],};
+  res.render("urls_new", templateVars);
 });
 
 app.get("/urls/:id", (req, res) => {
-  let templateVars = { shortURL: req.params.id, urls: urlDatabase, };
+  let templateVars = { shortURL: req.params.id, urls: urlDatabase, username: req.cookies["username"],};
   res.render("urls_show", templateVars);
+});
+
+//user name sign up POST
+app.post("/urls/form", (req, res) => {
+  res.cookie("username", req.body.userName);
+  res.redirect("/urls");
 });
 
 app.post("/urls", (req, res) => {
   let newUrlKey = generateRandomString();
   urlDatabase[newUrlKey] = req.body['longURL'];
-  let templateVars = { urls: urlDatabase, };
-  res.render("urls_index", templateVars);
+  let templateVars = { urls: urlDatabase, username: req.cookies["username"],};
+  res.redirect("urls_index", templateVars);
 });
 
 app.get("/u/:shortURL", (req, res) => {
@@ -50,14 +59,10 @@ app.post("/urls/:id/delete", (req, res) => {
       delete urlDatabase[key];
     }
   }
-  let templateVars = { urls: urlDatabase, };
-  res.render("urls_index", templateVars);
+  let templateVars = { urls: urlDatabase, username: req.cookies["username"],};
+  res.redirect("urls_index", templateVars);
 });
 
-app.post("/urls/all", (req, res) => {
-  let templateVars = { urls: urlDatabase, };
-  res.render("urls_index", templateVars);
-});
 //update long url
 app.post("/urls/:id", (req, res) => {
   let updateURL = req.params.id;
@@ -66,8 +71,14 @@ app.post("/urls/:id", (req, res) => {
       urlDatabase[key] = req.body['longURL'];
     }
   }
-  let templateVars = { urls: urlDatabase, };
-  res.render("urls_index", templateVars);
+  let templateVars = { urls: urlDatabase, username: req.cookies["username"],};
+  res.redirect("urls_index", templateVars);
+});
+
+// Logout
+app.post('/logout', (req, res) => {
+  res.clearCookie('username');
+  res.redirect('/urls');
 });
 
 app.listen(PORT, () => {

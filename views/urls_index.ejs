@@ -9,15 +9,17 @@
 </header>
 
 <body>
+
     <!-- Add your EJS code here -->
-    <p>URLs</p>
+    <p><b>URLs</b></p>
     <% for (let key in urls) { %>
 
-      Short url: <%= key %>, Long url: <%= urls[key] %>
+      <b>Short url:</b> <%= key %><br><br>
+      <b>Long url:</b> <%= urls[key] %><br><br>
 
-      <a href= <%= urls[key] %> >Link to URL.</a>
+      <a href= <%= urls[key] %> >Link to URL</a>
 
-      <a href= "/urls/<%= key %>">Update.</a>
+      <a href= "/urls/<%= key %>">Update</a>
 
       <form method="POST" action="/urls/<%= key %>/delete">
         <p> Delete button: <input type="submit" class=" btn" value="Delete URL" /> </p>
@@ -26,10 +28,6 @@
       <br>
 
     <% } %>
-
-    <form method="POST" action="/urls/all">
-      <p> Display URLs button: <input type="submit" class=" btn" value='Display' /> </p>
-    </form>
 
 </body>
 </html>

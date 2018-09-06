@@ -5,10 +5,11 @@
 </head>
 
 <header>
-    <% include partials/_header %>
+    <% include partials/_header %><br>
 </header>
 
 <body>
+
     <!-- Add your EJS code here -->
     <% for (let key in urls) { %>
       <% if (shortURL === key) { %>
@@ -21,5 +22,6 @@
 
       <% } %>
     <% } %>
+
 </body>
 </html>
