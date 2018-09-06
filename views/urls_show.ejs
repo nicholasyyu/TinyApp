@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+</head>
+
+<header>
+    <% include partials/_header %>
+</header>
+
+<body>
+    <!-- Add your EJS code here -->
+    <% for (let key in urls) { %>
+      <% if (shortURL === key) { %>
+
+        <form method="POST" action="/urls/<%= key %>">
+          <label for="longURL">URL:</label>
+          <input id="longURL" type="text" name="longURL" placeholder=<%= urls[key] %> style="width: 300px">
+          <p> Update URL: <input type="submit" class=" btn" value="Update" /> </p>
+        </form>
+
+      <% } %>
+    <% } %>
+</body>
+</html>

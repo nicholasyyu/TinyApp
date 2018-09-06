@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+</head>
+
+<header>
+    <% include partials/_header %>
+</header>
+
+<body>
+    <!-- Add your EJS code here -->
+    <p>URLs</p>
+    <% for (let key in urls) { %>
+
+      Short url: <%= key %>, Long url: <%= urls[key] %>
+
+      <a href= <%= urls[key] %> >Link to URL.</a>
+
+      <a href= "/urls/<%= key %>">Update.</a>
+
+      <form method="POST" action="/urls/<%= key %>/delete">
+        <p> Delete button: <input type="submit" class=" btn" value="Delete URL" /> </p>
+      </form>
+
+      <br>
+
+    <% } %>
+
+    <form method="POST" action="/urls/all">
+      <p> Display URLs button: <input type="submit" class=" btn" value='Display' /> </p>
+    </form>
+
+</body>
+</html>
