@@ -5,8 +5,6 @@ var app = express();
 app.use(cookieSession({
   name: 'session',
   keys: ['key1'],
-
-  // Cookie Options
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
 
@@ -20,12 +18,15 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
 var urlDatabase = {
-  "b2xVn2": {url: "http://www.lighthouselabs.ca", userID: "userRandomID"},
-  "9sm5xK": {url: "http://www.google.com", userID: "user2RandomID"},
+
 };
 
 const user = {
-
+  "tempUser": {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: "123"
+  },
 }
 //GET Route to Show the Home Page
 app.get("/", (req, res) => {
@@ -37,13 +38,15 @@ app.get("/", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase, users: req.session.user_id,};
+  let key = checkUserLogin(req.session.user_id);
+  let templateVars = { urls: urlDatabase, users: req.session.user_id, userEmail: user[key].email, };
   res.render("urls_index", templateVars);
 });
 //GET Route to Show the Form
 app.get("/urls/new", (req, res) => {
   if(req.session.user_id){
-    let templateVars = { users: req.session.user_id,};
+    let key = checkUserLogin(req.session.user_id);
+    let templateVars = { users: req.session.user_id, userEmail: user[key].email,};
     res.render("urls_new", templateVars);
   }else{
     res.redirect("/login");
@@ -54,7 +57,8 @@ app.get("/urls/:id", (req, res) => {
   if(urlDatabase[req.params.id]){
     if(req.session.user_id){
       if(req.session.user_id === urlDatabase[req.params.id].userID){
-        let templateVars = { shortURL: req.params.id, urls: urlDatabase, users: req.session.user_id,};
+        let key = checkUserLogin(req.session.user_id);
+        let templateVars = { shortURL: req.params.id, urls: urlDatabase, users: req.session.user_id, userEmail: user[key].email,};
         res.render("urls_show", templateVars);
       }else{
         res.sendStatus(400);
@@ -120,7 +124,8 @@ app.post('/logout', (req, res) => {
 
 //Registration Page
 app.get("/register", (req, res) => {
-  let templateVars = { urls: urlDatabase, users: req.session.user_id,};
+  let key = checkUserLogin(req.session.user_id);
+  let templateVars = { urls: urlDatabase, users: req.session.user_id, userEmail: user[key].email,};
   res.render("registration_form", templateVars);
 });
 
@@ -143,7 +148,8 @@ app.post("/register", (req, res) => {
 
 //User Login Page
 app.get("/login", (req, res) => {
-  let templateVars = { urls: urlDatabase, users: req.session.user_id,};
+  let key = checkUserLogin(req.session.user_id);
+  let templateVars = { urls: urlDatabase, users: req.session.user_id, userEmail: user[key].email,};
   res.render("login", templateVars);
 });
 
@@ -210,6 +216,15 @@ function checkUserLoginContent(userdata, email, password){
   }
   else {
     return "badUserLogin";
+  }
+}
+
+function checkUserLogin(user_id){
+  if(user_id){
+    return user_id;
+  }
+  else{
+    return "tempUser";
   }
 }
 

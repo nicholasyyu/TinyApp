@@ -11,7 +11,10 @@
 <body>
     <!-- Add your EJS code here -->
     <p><b>Short URLs Database.</b></p>
+
     <% if (users) { %>
+    <a href= "/urls/new">Add URL</a>
+    <p>-----------------------------</p>
     <% for (let key in urls) { %>
       <% if(urls[key].userID === users) { %>
         <b>Short url:</b> <%= key %><br><br>
@@ -21,13 +24,12 @@
       <a href= <%= urls[key].url %> >Link to URL</a><br><br>
 
       <% if(urls[key].userID === users) { %>
-        <a href= "/urls/<%= key %>">Update URL</a><br><br>
-        <a href= "/urls/new">Add URL</a><br>
+        <a href= "/urls/<%= key %>">Update URL</a><br>
         <form method="POST" action="/urls/<%= key %>/delete">
         <p><input type="submit" class=" btn" value="Delete URL" /> </p>
         </form>
       <% } %>
-      <br>
+      <p>-----------------------------</p>
     <% } %>
     <% } %>
 </body>

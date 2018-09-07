@@ -7,15 +7,19 @@
 
 
   <% if(users){ %>
-    <h1>Welcome! &ensp; <%= users %></h1>
+    <h1>Welcome!</h1>
+    <p><b>User: <%= userEmail %></b></p>
+    <form action="/" method="GET" >
+      <input type="submit" value="Home">
+    </form><br>
     <form action="/logout" method="POST" >
       <input type="submit" value="Logout">
-    </form>
+    </form><br>
   <% } else{ %>
     <h1>Welcome!</h1>
-    <a href= "/register"><font size="5">register</font></a>
+    <a href= "/register"><font size="5">Register</font></a>
     &ensp;
-    <a href= "/login"><font size="5">login</font></a>
+    <a href= "/login"><font size="5">Login</font></a>
   <% } %>
 
 
