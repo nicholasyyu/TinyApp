@@ -5,6 +5,8 @@ app.use(cookieParser());
 var PORT = 8080; // default port 8080
 
 const bodyParser = require("body-parser");
+const bcrypt = require('bcrypt');
+
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.set("view engine", "ejs");
@@ -15,16 +17,7 @@ var urlDatabase = {
 };
 
 const users = {
-  "userRandomID": {
-    id: "userRandomID",
-    email: "user@example.com",
-    password: "123"
-  },
- "user2RandomID": {
-    id: "user2RandomID",
-    email: "user2@example.com",
-    password: "dishwasher-funk"
-  }
+
 }
 //GET Route to Show the Home Page
 app.get("/", (req, res) => {
@@ -115,7 +108,7 @@ app.post("/register", (req, res) => {
     let userData = {};
     userData["id"] = userID;
     userData["email"] = req.body.email;
-    userData["password"] = req.body.password;
+    userData["password"] = bcrypt.hashSync(req.body.password, 10);
     users[userID] = userData;
     res.cookie("user_id", users[userID].id);
     res.redirect("/urls");
@@ -178,7 +171,7 @@ function checkUserLoginContent(userdata, email, password){
   let result = "";
   if(email.length !== 0 && password.length !== 0) {
     Object.keys(userdata).forEach(function(key) {
-      if (userdata[key].email === email && userdata[key].password === password) {
+      if (userdata[key].email === email && bcrypt.compareSync(password, userdata[key].password)) {
         count++;
         result = key;
       }
