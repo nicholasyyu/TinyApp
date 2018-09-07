@@ -13,13 +13,15 @@
     <p><b>Short URLs Database.</b></p>
 
     <% if (users) { %>
-    <a href= "/urls/new">Add URL</a>
+    <b>Feel free to add new URL: </b><a href= "/urls/new">Add URL</a>
     <p>-----------------------------</p>
     <% for (let key in urls) { %>
       <% if(urls[key].userID === users) { %>
-        <b>Short url:</b> <%= key %><br><br>
+        <b>Short url:</b> <%= key %> <br><br>
+        <b>Long url:</b> <%= urls[key].url %><br><br>
+        <b>Created on:</b> <%= urls[key].dateCreate %> <br><br>
+        <b>Visit counter:</b> <%= urls[key].counter %> <br><br>
       <% } %>
-      <b>Long url:</b> <%= urls[key].url %><br><br>
 
       <a href= <%= urls[key].url %> >Link to URL</a><br><br>
 

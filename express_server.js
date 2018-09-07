@@ -81,11 +81,13 @@ app.get("/urls/:id", (req, res) => {
 
 //POST Route to new URL and update URL page
 app.post("/urls", (req, res) => {
-
+  let now = new Date(new Date().getTime() - 7*60*60*1000).toLocaleString('en-US');
   let newUrlKey = generateRandomString();
   urlDatabase[newUrlKey] = {
     url: req.body['longURL'],
     userID: req.session.user_id,
+    counter: 0,
+    dateCreate: now
   };
   res.redirect("/urls/" + newUrlKey);
 
@@ -97,6 +99,7 @@ app.get("/u/:shortURL", (req, res) => {
   if(urlDatabase[req.params.shortURL]) {
     let shortURL = req.params.shortURL;
     let longURL = urlDatabase[shortURL].url;
+    urlDatabase[shortURL].counter++;
     res.redirect(longURL);
   } else {
     res.sendStatus(400);
