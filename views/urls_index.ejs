@@ -21,9 +21,10 @@
       <a href= <%= urls[key].url %> >Link to URL</a><br><br>
 
       <% if(urls[key].userID === users) { %>
-        <a href= "/urls/<%= key %>">Update</a>
+        <a href= "/urls/<%= key %>">Update URL</a><br><br>
+        <a href= "/urls/new">Add URL</a><br>
         <form method="POST" action="/urls/<%= key %>/delete">
-        <p> Delete: <input type="submit" class=" btn" value="Delete URL" /> </p>
+        <p><input type="submit" class=" btn" value="Delete URL" /> </p>
         </form>
       <% } %>
       <br>
