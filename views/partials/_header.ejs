@@ -5,18 +5,17 @@
 </head>
 <body>
 
-  <% if(username){ %>
-    <h1><%= username %></h1>
+
+  <% if(users){ %>
+    <h1>Welcome! &ensp; <%= users %></h1>
     <form action="/logout" method="POST" >
       <input type="submit" value="Logout">
     </form>
   <% } else{ %>
-    <h1>log in:</h1>
-    <form action="/urls/form" method="POST" style="margin:0px;">
-      <label for="userName">Enter User Name:</label>
-      <input id="userName" type="text" name="userName" placeholder="Username" style="width: 150px">
-      <input type="submit" value="Log in">
-    </form>
+    <h1>Welcome!</h1>
+    <a href= "/register"><font size="5">register</font></a>
+    &ensp;
+    <a href= "/login"><font size="5">login</font></a>
   <% } %>
 
 
