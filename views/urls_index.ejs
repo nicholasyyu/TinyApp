@@ -14,24 +14,23 @@
 
     <% if (users) { %>
     <b>Feel free to add new URL: </b><a href= "/urls/new">Add URL</a>
-    <p>-----------------------------</p>
+    <p>--------------------------------------</p>
     <% for (let key in urls) { %>
       <% if(urls[key].userID === users) { %>
         <b>Short url:</b> <%= key %> <br><br>
         <b>Long url:</b> <%= urls[key].url %><br><br>
         <b>Created on:</b> <%= urls[key].dateCreate %> <br><br>
         <b>Visit counter:</b> <%= urls[key].counter %> <br><br>
+        <a href= <%= urls[key].url %> >Link to URL</a><br><br>
       <% } %>
-
-      <a href= <%= urls[key].url %> >Link to URL</a><br><br>
 
       <% if(urls[key].userID === users) { %>
         <a href= "/urls/<%= key %>">Update URL</a><br>
         <form method="POST" action="/urls/<%= key %>/delete">
         <p><input type="submit" class=" btn" value="Delete URL" /> </p>
         </form>
+        <p>-------------------------------------</p>
       <% } %>
-      <p>-----------------------------</p>
     <% } %>
     <% } %>
 </body>
